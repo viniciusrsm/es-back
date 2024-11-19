@@ -42,6 +42,7 @@ model Restaurant {
 model Rating {
   id Int @default(autoincrement()) @id
   stars Int
+  description String?
 
   userId Int
   user User @relation(fields: [userId], references: [id])
@@ -58,4 +59,19 @@ model Menu {
 
   restaurantId Int @unique
   restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+
+  menuItems MenuItem[]
+}
+
+model MenuItem {
+  id Int @default(autoincrement()) @id
+
+  menuId Int
+  menu Menu @relation(fields: [menuId], references: [id])
+
+  name String
+  desc String
+  price String
+  photo String?
+
 }
