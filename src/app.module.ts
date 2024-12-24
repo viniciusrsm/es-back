@@ -6,6 +6,7 @@ import { MenuModule } from './menu/menu.module';
 import { RatingModule } from './rating/rating.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from './user/user.module';
     RatingModule,
     MenuModule,
     MenuItemModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -6,15 +6,18 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 import { MenuItemService } from './menu-item.service';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('menu-item')
 export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createMenuItemDto: CreateMenuItemDto) {
     return this.menuItemService.create(createMenuItemDto);
