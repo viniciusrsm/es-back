@@ -8,10 +8,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
 import { RatingService } from './rating.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('rating')
 export class RatingController {
@@ -23,6 +23,7 @@ export class RatingController {
     return this.ratingService.create(createRatingDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.ratingService.findAll();
@@ -33,6 +34,7 @@ export class RatingController {
     return this.ratingService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRatingDto: UpdateRatingDto) {
     return this.ratingService.update(+id, updateRatingDto);
