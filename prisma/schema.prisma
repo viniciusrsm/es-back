@@ -34,7 +34,7 @@ model Restaurant {
   userId Int
   user User @relation(fields: [userId], references: [id])
 
-  menu Menu?
+  menu Menu[]
 
   ratings Rating[]
 }
@@ -72,6 +72,5 @@ model MenuItem {
   name String
   desc String
   price String
-  photo String?
 
 }
