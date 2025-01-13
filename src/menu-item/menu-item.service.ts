@@ -1,11 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 
 @Injectable()
 export class MenuItemService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(REQUEST) private readonly request: Request,
+  ) {}
 
   async create(createMenuItemDto: CreateMenuItemDto) {
     return await this.prisma.menuItem.create({ data: createMenuItemDto });
@@ -20,6 +25,16 @@ export class MenuItemService {
   }
 
   async update(id: number, updateMenuItemDto: UpdateMenuItemDto) {
+    const userId = this.request['user']['sub'];
+    const menuId = (
+      await this.prisma.menuItem.findUnique({ where: { id: id } })
+    ).menuId;
+    const menuUserId = (
+      await this.prisma.menu.findUnique({
+        where: { id: menuId },
+      })
+    ).userId;
+    if (userId !== menuUserId) throw new ForbiddenException();
     return await this.prisma.menuItem.update({
       where: { id: id },
       data: updateMenuItemDto,
@@ -27,6 +42,16 @@ export class MenuItemService {
   }
 
   async remove(id: number) {
+    const userId = this.request['user']['sub'];
+    const menuId = (
+      await this.prisma.menuItem.findUnique({ where: { id: id } })
+    ).menuId;
+    const menuUserId = (
+      await this.prisma.menu.findUnique({
+        where: { id: menuId },
+      })
+    ).userId;
+    if (userId !== menuUserId) throw new ForbiddenException();
     return await this.prisma.menuItem.delete({ where: { id: id } });
   }
 }
