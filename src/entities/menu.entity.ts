@@ -1,8 +1,12 @@
 import { Menu } from '@prisma/client';
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class MenuEntity implements Menu {
   id: number;
+
+  @IsString()
+  @IsNotEmpty()
+  name: string;
 
   @IsNumber()
   @IsNotEmpty()

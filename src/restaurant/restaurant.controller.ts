@@ -33,6 +33,11 @@ export class RestaurantController {
     return this.restaurantService.findOne(+id);
   }
 
+  @Get('byUser/:userId')
+  findByUser(@Param('userId') userId: string) {
+    return this.restaurantService.findByUserId(+userId);
+  }
+
   @UseGuards(AuthGuard)
   @Patch(':id')
   update(

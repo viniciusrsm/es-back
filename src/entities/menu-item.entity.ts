@@ -1,5 +1,5 @@
 import { MenuItem } from '@prisma/client';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class MenuItemEntity implements MenuItem {
   id: number;
@@ -14,11 +14,7 @@ export class MenuItemEntity implements MenuItem {
 
   @IsString()
   @IsNotEmpty()
-  price: string;
-
-  @IsString()
-  @IsOptional()
-  photo: string;
+  price: number;
 
   @IsNumber()
   @IsNotEmpty()

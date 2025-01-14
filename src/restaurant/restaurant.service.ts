@@ -24,6 +24,10 @@ export class RestaurantService {
     return await this.prisma.restaurant.findUnique({ where: { id: id } });
   }
 
+  async findByUserId(userId: number) {
+    return await this.prisma.restaurant.findMany({ where: { userId: userId } });
+  }
+
   async update(id: number, updateRestaurantDto: UpdateRestaurantDto) {
     const userId = this.request['user']['sub'];
     const restaurantUserId = (
