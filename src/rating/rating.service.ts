@@ -17,7 +17,6 @@ export class RatingService {
   }
 
   async findAll() {
-    console.log(this.request);
     return await this.prisma.rating.findMany();
   }
 
@@ -27,7 +26,10 @@ export class RatingService {
 
   async update(id: number, updateRatingDto: UpdateRatingDto) {
     const userId = this.request['user']['sub'];
-    if (userId !== id) throw new ForbiddenException();
+    const ratingUserId = (
+      await this.prisma.rating.findUnique({ where: { id: id } })
+    ).userId;
+    if (userId !== ratingUserId) throw new ForbiddenException();
     return await this.prisma.rating.update({
       where: { id: id },
       data: updateRatingDto,
@@ -35,6 +37,11 @@ export class RatingService {
   }
 
   async remove(id: number) {
+    const userId = this.request['user']['sub'];
+    const ratingUserId = (
+      await this.prisma.rating.findUnique({ where: { id: id } })
+    ).userId;
+    if (userId !== ratingUserId) throw new ForbiddenException();
     return await this.prisma.rating.delete({ where: { id: id } });
   }
 }

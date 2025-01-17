@@ -7,9 +7,9 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { MenuService } from './menu.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('menu')
 export class MenuController {
@@ -31,6 +31,7 @@ export class MenuController {
     return this.menuService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.menuService.remove(+id);

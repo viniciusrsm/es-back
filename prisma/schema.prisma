@@ -32,7 +32,7 @@ model Restaurant {
   phone String
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   menu Menu[]
 
@@ -45,20 +45,22 @@ model Rating {
   description String?
 
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   restaurantId Int
-  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }
 
 model Menu {
   id Int @default(autoincrement()) @id
 
+  name String
+
   userId Int
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   restaurantId Int @unique
-  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 
   menuItems MenuItem[]
 }
@@ -67,10 +69,10 @@ model MenuItem {
   id Int @default(autoincrement()) @id
 
   menuId Int
-  menu Menu @relation(fields: [menuId], references: [id])
+  menu Menu @relation(fields: [menuId], references: [id], onDelete: Cascade)
 
   name String
   desc String
-  price String
+  price Int
 
 }

@@ -23,7 +23,6 @@ export class RatingController {
     return this.ratingService.create(createRatingDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
   findAll() {
     return this.ratingService.findAll();
@@ -40,6 +39,7 @@ export class RatingController {
     return this.ratingService.update(+id, updateRatingDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.ratingService.remove(+id);

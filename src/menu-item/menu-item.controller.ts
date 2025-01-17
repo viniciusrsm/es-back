@@ -8,10 +8,10 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from 'src/auth/auth.guard';
 import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 import { MenuItemService } from './menu-item.service';
-import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('menu-item')
 export class MenuItemController {
@@ -33,6 +33,7 @@ export class MenuItemController {
     return this.menuItemService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -41,6 +42,7 @@ export class MenuItemController {
     return this.menuItemService.update(+id, updateMenuItemDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.menuItemService.remove(+id);
