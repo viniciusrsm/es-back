@@ -33,6 +33,11 @@ export class MenuItemController {
     return this.menuItemService.findOne(+id);
   }
 
+  @Get('pratos/:menuId')
+  findItemByMenuId(@Param('menuId') menuId: string) {
+    return this.menuItemService.findItemByMenuId(+menuId);
+  }
+
   @UseGuards(AuthGuard)
   @Patch(':id')
   update(

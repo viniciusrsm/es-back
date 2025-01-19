@@ -1,14 +1,22 @@
-import { ForbiddenException, Inject, Injectable, Scope } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+  Scope,
+} from '@nestjs/common';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export class RatingService {
   constructor(
     private prisma: PrismaService,
+    private readonly userService: UserService,
     @Inject(REQUEST) private readonly request: Request,
   ) {}
 
@@ -18,6 +26,45 @@ export class RatingService {
 
   async findAll() {
     return await this.prisma.rating.findMany();
+  }
+
+  async findAllRatingsByRestaurantId(id: number) {
+    return await this.prisma.rating.findMany({
+      where: { restaurantId: id },
+    });
+  }
+
+  async findAllRatingByUserId(userId: number) {
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new BadRequestException(
+        'Usuário não encontrado para encontrar as avaliações!',
+      );
+    }
+
+    return await this.prisma.rating.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  }
+
+  async findUserNameByRating(userId: number) {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+      },
+    });
+
+    if (!user) {
+      throw new Error('Usuário não encontrado!');
+    }
+
+    return user.name;
   }
 
   async findOne(id: number) {

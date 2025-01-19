@@ -22,9 +22,6 @@ ALTER TABLE "Rating" DROP CONSTRAINT "Rating_userId_fkey";
 -- DropForeignKey
 ALTER TABLE "Restaurant" DROP CONSTRAINT "Restaurant_userId_fkey";
 
--- AlterTable
-ALTER TABLE "MenuItem" DROP COLUMN "photo";
-
 -- AddForeignKey
 ALTER TABLE "Restaurant" ADD CONSTRAINT "Restaurant_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 

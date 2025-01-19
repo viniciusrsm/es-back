@@ -3,11 +3,13 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateMenuDto } from './dto/create-menu.dto';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class MenuService {
   constructor(
     private prisma: PrismaService,
+    private readonly userService: UserService,
     @Inject(REQUEST) private readonly request: Request,
   ) {}
 
@@ -21,6 +23,14 @@ export class MenuService {
 
   async findOne(id: number) {
     return await this.prisma.menu.findUnique({ where: { id: id } });
+  }
+
+  async findMenusByUserId(userId: number) {
+    return await this.prisma.menu.findMany({
+      where: {
+        userId: userId,
+      },
+    });
   }
 
   async remove(id: number) {

@@ -24,6 +24,14 @@ export class MenuItemService {
     return await this.prisma.menuItem.findUnique({ where: { id: id } });
   }
 
+  async findItemByMenuId(menuId: number) {
+    return await this.prisma.menuItem.findMany({
+      where: {
+        menuId: menuId,
+      },
+    });
+  }
+
   async update(id: number, updateMenuItemDto: UpdateMenuItemDto) {
     const userId = this.request['user']['sub'];
     const menuId = (

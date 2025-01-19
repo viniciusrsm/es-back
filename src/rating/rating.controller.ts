@@ -33,6 +33,21 @@ export class RatingController {
     return this.ratingService.findOne(+id);
   }
 
+  @Get('allRatings/:id')
+  findAllRatingsByRestaurantId(@Param('id') id: string) {
+    return this.ratingService.findAllRatingsByRestaurantId(+id);
+  }
+
+  @Get('userRating/:id')
+  findAllRatingByUserId(@Param('id') id: string) {
+    return this.ratingService.findAllRatingByUserId(+id);
+  }
+
+  @Get('nameRating/:userId')
+  findUserNameByRating(@Param('userId') userId: string) {
+    return this.ratingService.findUserNameByRating(+userId);
+  }
+
   @UseGuards(AuthGuard)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateRatingDto: UpdateRatingDto) {

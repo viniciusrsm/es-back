@@ -31,6 +31,11 @@ export class MenuController {
     return this.menuService.findOne(+id);
   }
 
+  @Get('/find/:userId')
+  findMenusByUserId(@Param('userId') userId: string) {
+    return this.menuService.findMenusByUserId(+userId);
+  }
+
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {

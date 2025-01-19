@@ -7,5 +7,6 @@ import { RestaurantService } from './restaurant.service';
   imports: [PrismaModule],
   controllers: [RestaurantController],
   providers: [RestaurantService],
+  exports: [RestaurantService],
 })
 export class RestaurantModule {}
