@@ -30,6 +30,18 @@ export class UserService {
     });
   }
 
+  async findInfoByUser(userId: number) {
+    return await this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+        username: true,
+      },
+    });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     const userId = this.request['user']['sub'];
     if (userId !== id) throw new ForbiddenException();

@@ -26,9 +26,18 @@ export class MenuService {
   }
 
   async findMenusByUserId(userId: number) {
-    return await this.prisma.menu.findMany({
+    const response = await this.prisma.menu.findMany({
       where: {
         userId: userId,
+      },
+    });
+    return response;
+  }
+
+  async findByRestaurantId(resId: number) {
+    return await this.prisma.menu.findMany({
+      where: {
+        restaurantId: resId,
       },
     });
   }
