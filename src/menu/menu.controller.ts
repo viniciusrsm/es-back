@@ -3,17 +3,25 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { Request } from 'express';
 import { CreateMenuDto } from './dto/create-menu.dto';
 import { MenuService } from './menu.service';
+import { UpdateMenuDto } from './dto/update-menu.dto';
+import { REQUEST } from '@nestjs/core';
 
 @Controller('menu')
 export class MenuController {
-  constructor(private readonly menuService: MenuService) {}
+  constructor(
+    private readonly menuService: MenuService,
+    @Inject(REQUEST) private readonly request: Request,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Post()
@@ -39,6 +47,16 @@ export class MenuController {
   @Get('by/restaurant/:resId')
   findByRestaurantId(@Param('resId') resId: string) {
     return this.menuService.findByRestaurantId(+resId);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch(':id/:userId')
+  update(
+    @Param('id') id: string,
+    @Param('userId') userId: string,
+    @Body() updateMenuDto: UpdateMenuDto,
+  ) {
+    return this.menuService.update(+id, updateMenuDto, +userId);
   }
 
   @UseGuards(AuthGuard)
